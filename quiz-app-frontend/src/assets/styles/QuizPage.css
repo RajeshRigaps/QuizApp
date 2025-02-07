@@ -1,0 +1,53 @@
+.quiz-page {
+    display: flex;
+    background-color: rgb(62, 224, 242);
+    height: 100vh;
+    width: 100vw;
+}
+
+.question-numbers {
+    width: 25%;
+    background-color: lightblue;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.question-number {
+    height: 50px;
+    width: 50px;
+    padding: 10px;
+    margin: 5px 5px 5px 5px;
+    background-color: #ddd;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.question-number.active {
+    background-color: #aaa;
+}
+
+.quiz-container {
+    width: 75%;
+    padding: 20px;
+    box-sizing: border-box;
+}
+/* The box-sizing property is used to alter the default CSS box model used to calculate widths and heights of elements. */
+.quiz-container {
+    width: 75%;
+    padding: 20px;
+    box-sizing: border-box; /* This makes sure that padding and border are included in the element's total width and height. */
+}
+.question {
+    margin-top: 20px;
+}
+
+.options {
+    margin-top: 10px;
+}
+
+.option {
+    padding: 10px;
+    margin: 5px 0;
+    background-color: #eee;
+    cursor: pointer;
+}
