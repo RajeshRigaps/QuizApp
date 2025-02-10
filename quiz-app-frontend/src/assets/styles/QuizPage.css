@@ -51,3 +51,15 @@
     background-color: #eee;
     cursor: pointer;
 }
+.option.selected {
+    background-color: #ccc;
+}
+
+.submit-button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: green;
+    color: white;
+    border: none;
+    cursor: pointer;
+}

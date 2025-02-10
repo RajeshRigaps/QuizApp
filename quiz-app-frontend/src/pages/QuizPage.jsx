@@ -8,11 +8,20 @@ const QuizPage = () =>
         const location = useLocation();
         const name = location.state.name;
         const [ currentQuestionIndex, setCurrentQuestionIndex  ] = useState(0);
-
+        const [ selectedOptions, setSelectedOptions ] = useState(Array(questions.length).fill(null));
         const handleQuestionClick = (index) => {
             setCurrentQuestionIndex(index);
-        };
-
+        }
+        const handleOptionClick = (optionIndex) => {
+            const newSelectedOptions = [...selectedOptions];
+            newSelectedOptions[currentQuestionIndex] = optionIndex;
+            setSelectedOptions(newSelectedOptions);
+        }
+        const handleSubmit = () => {
+            console.log("Selected options:", selectedOptions);
+            
+            // You can send the selectedOptions to a server or process them as needed
+        }
         return(
         <div className="quiz-page">
             <div className="question-numbers">
@@ -32,12 +41,21 @@ const QuizPage = () =>
                     <h2>{questions[currentQuestionIndex].question}</h2>
                     <div className="options">
                         {questions[currentQuestionIndex].options.map((opt, index) => (
-                            <div className="option">
+                            <div 
+                                key ={index}
+                                className={`option ${selectedOptions[currentQuestionIndex] == index ? "selected" : "" }`}
+                                onClick={() => handleOptionClick(index)}
+                            >
                                 {opt}
                             </div>
                         ))}
                     </div>
                 </div>
+                {currentQuestionIndex == questions.length - 1 && (
+                    <button className="submit-button" onClick={handleSubmit}>
+                        Submit
+                    </button>
+                )}
             </div>
         </div>
     );
