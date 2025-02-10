@@ -23,7 +23,7 @@ const QuizPage = () =>
         useEffect(() => {
             // Shuffle questions and options
             const shuffledQuestions = shuffleArray([...questionsData]).map((questionData) => ({
-                ...questionData,
+                question: questionData.question,
                 options: shuffleArray([...questionData.options]),
             }));
             setQuestions(shuffledQuestions);
