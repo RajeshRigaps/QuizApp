@@ -2,6 +2,7 @@
 
 .home-container {
     background-color: lightblue;
+    background-image: none;
     padding: 20px;
     height: 100vh;
     width: 100vw;
