@@ -3,7 +3,7 @@ import { Navigate } from 'react-router-dom';
 import { QuizContext } from '../contexts/QuizContext';
 
 const ProtectedQuizRoute = ({ children }) => {
-  const { isQuizCompleted, score, questions, selectedOptions } = useContext(QuizContext);
+  const { isQuizCompleted } = useContext(QuizContext);
 
   // If the quiz is completed, redirect to the results page with state.
   if (isQuizCompleted) {
@@ -11,7 +11,6 @@ const ProtectedQuizRoute = ({ children }) => {
       <Navigate
         to="/result"
         replace
-        state={{ score, questions, selectedOptions }}
       />
     );
   }
