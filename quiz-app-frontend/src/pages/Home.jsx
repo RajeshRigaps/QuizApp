@@ -1,20 +1,26 @@
-import { useState } from "react";
-import { useNavigate} from "react-router-dom";
-import "../assets/styles/Home.css";
+import { useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { QuizContext } from '../contexts/QuizContext';
+import '../assets/styles/Home.css';
 
-const Home = () => 
-    {
-        const [name, setName] = useState("Guest");
+
+const Home = () => {
+        const [name, setName] = useState('');
         const navigate = useNavigate();
+        const { isQuizCompleted } = useContext(QuizContext);
+
         const handleStart = () => {
-            if(name === "Guest") {
-                alert("Please enter your name to start the quiz");
+            if(isQuizCompleted){
+                alert("You have already completed the quiz.")
             }
-            else {
+            else if(name === "") {
+                alert("Please enter your name to start the quiz");
+            } else {
                 navigate("/quiz", {state: {name}});
             }
-        }
-        return(
+        };
+
+        return (
         <div className="home-container">
             <div className="home-content">
             <h1>Welcome to Quiz App</h1>
@@ -25,10 +31,12 @@ const Home = () =>
             onChange={(e) => setName(e.target.value)}
             className="name-input"
             />
-            
-                <button className="start-button" onClick={handleStart} >Start Now</button>
-          
-            </div>
-        </div>);
-    }
-export default Home
+                            <button className="start-button" onClick={handleStart}>
+Start Now
+</button>
+                      </div>
+        </div>
+); 
+    };
+
+export default Home;
