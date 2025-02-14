@@ -5,9 +5,8 @@ import '../assets/styles/Home.css';
 
 
 const Home = () => {
-        const [name, setName] = useState('');
         const navigate = useNavigate();
-        const { isQuizCompleted } = useContext(QuizContext);
+        const {name , setName, isQuizCompleted } = useContext(QuizContext);
 
         const handleStart = () => {
             if(isQuizCompleted){
@@ -16,7 +15,7 @@ const Home = () => {
             else if(name === "") {
                 alert("Please enter your name to start the quiz");
             } else {
-                navigate("/quiz", {state: {name}});
+                navigate("/quiz");
             }
         };
 
@@ -31,12 +30,12 @@ const Home = () => {
             onChange={(e) => setName(e.target.value)}
             className="name-input"
             />
-                            <button className="start-button" onClick={handleStart}>
-Start Now
-</button>
-                      </div>
+            <button className="start-button" onClick={handleStart}>
+                Start Now
+            </button>
+            </div>
         </div>
-); 
-    };
+        ); 
+};
 
 export default Home;

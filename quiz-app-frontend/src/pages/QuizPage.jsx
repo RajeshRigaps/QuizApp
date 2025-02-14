@@ -1,8 +1,9 @@
 import { useState, useEffect, useContext } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { QuizContext } from '../contexts/QuizContext';
 import '../assets/styles/QuizPage.css';
-import questionsData from '../components/Question';
+
+const API_URL = 'http://localhost:5000/api/quiz';
 
 const shuffleArray = (array) => {
   for (let i = array.length - 1; i > 0; i--) {
@@ -13,21 +14,24 @@ const shuffleArray = (array) => {
 };
 
 const QuizPage = () => {
-  const location = useLocation();
   const navigate = useNavigate();
-  const { setIsQuizCompleted, setScore, setQuestions, setSelectedOptions, questions, selectedOptions } = useContext(QuizContext);
-  const name = location.state.name;
+  const { name, setIsQuizCompleted, setScore, setQuestions, setSelectedOptions, questions, selectedOptions } = useContext(QuizContext);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
 
   useEffect(() => {
-    // Shuffle questions and options
-    const shuffledQuestions = shuffleArray([...questionsData]).map((questionData) => ({
-      question: questionData.question,
-      options: shuffleArray([...questionData.options]),
-      correctAnswer: questionData.correctAnswer
-    }));
-    setQuestions(shuffledQuestions);
-    setSelectedOptions(Array(shuffledQuestions.length).fill(null));
+    fetch(`${API_URL}/questions`)
+      .then((res) => res.json())
+       .then((data) => {
+        // Shuffle questions and options
+        const shuffledQuestions = shuffleArray([...data]).map((questionData) => ({
+          question: questionData.question,
+          options: shuffleArray([...questionData.options]),
+          correctAnswer: questionData.correctAnswer
+        }));
+        setQuestions(shuffledQuestions);
+        setSelectedOptions(Array(shuffledQuestions.length).fill(null));
+      })
+      .catch((err) => console.error("Error fetching questions", err));
   }, [setQuestions, setSelectedOptions]);
 
   const handleQuestionClick = (index) => {
@@ -41,14 +45,28 @@ const QuizPage = () => {
   };
 
   const handleSubmit = () => {
+
+
     let calculatedScore = 0;
     selectedOptions.forEach((selectedOption, index) => {
       if (questions[index].options[selectedOption] === questions[index].correctAnswer) {
         calculatedScore += 1;
       }
+      //
+      questions[index] = {...questions[index], optedAnswer: questions[index].options[selectedOption] }
     });
+    console.log(questions);
     setScore(calculatedScore);
     setIsQuizCompleted(true);
+    fetch(`${API_URL}/submit`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username: name, questions }),
+    })
+    .then((res) => res.json())
+    .then(() => console.log("Quiz submitted!"))
+    .catch((err) => console.error("Error submitting quiz:", err));
+
     navigate('/result');
   };
 

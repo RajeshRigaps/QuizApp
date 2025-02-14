@@ -5,7 +5,7 @@ import '../assets/styles/ResultsPage.css';
 
 const ResultPage = () => {
   const navigate = useNavigate();
-  const { setIsQuizCompleted, score, questions, selectedOptions } = useContext(QuizContext);
+  const { name, setIsQuizCompleted, score, questions, selectedOptions } = useContext(QuizContext);
 
   const handleBackToHome = () => {
     setIsQuizCompleted(false);
