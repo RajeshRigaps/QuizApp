@@ -24,7 +24,7 @@ const QuizPage = () => {
       .then((data) => {
         // Shuffle questions and options
         const shuffledQuestions = shuffleArray([...data]).map((questionData) => ({
-          _id: questionData._id,
+          _id : questionData._id,
           question: questionData.question,
           options: shuffleArray([...questionData.options]),
           correctAnswer: questionData.correctAnswer
@@ -46,26 +46,17 @@ const QuizPage = () => {
   };
 
   const handleSubmit = () => {
-    let calculatedScore = 0;
-    const updatedQuestions = questions.map((question, index) => {
-      const optedAnswer = question.options[selectedOptions[index]];
-      if (optedAnswer === question.correctAnswer) {
-        calculatedScore += 1;
-      }
-      return { ...question, optedAnswer };
-    });
-    console.log(updatedQuestions);
-    setScore(calculatedScore);
-    setIsQuizCompleted(true);
     // Submit questions and score
     fetch(`${API_URL}/submit`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username: name, results: updatedQuestions, score: calculatedScore }),
+      body: JSON.stringify({ username: name, questions, selectedOptions }),
     })
     .then((res) => res.json())
-    .then(() => {
+    .then((data) => {
       console.log("Quiz submitted!");
+      setScore(data.score);
+      setIsQuizCompleted(true);
       navigate('/result');
     })
     .catch((err) => console.error("Error submitting quiz:", err));

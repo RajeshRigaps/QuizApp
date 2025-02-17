@@ -16,19 +16,21 @@ router.get("/questions", async (req, res) => {
 
 // Submit Quiz & Save Score
 router.post('/submit', async (req, res) => {
-    const { username, results, score } = req.body;
-  
+    const { username, questions, selectedOptions } = req.body;
     try {
-      // Update questions with opted answers
-      for (const result of results) {
-        await Question.findByIdAndUpdate(result._id, { optedAnswer: result.optedAnswer });
-      }
-  
+        let calculatedScore = 0;
+        const results = await questions.map((question, index) => {
+            const optedAnswer = question.options[selectedOptions[index]];
+            if (optedAnswer === question.correctAnswer) {
+            calculatedScore += 1;
+            }
+            return { _id:question._id, optedAnswer };
+      });
       // Save the score to the database
-      const newScore = new Score({ username, score });
+      const newScore = new Score({ username, score : calculatedScore , results});
       await newScore.save();
-  
-      res.status(200).json({ message: 'Quiz submitted successfully!' });
+      console.log(results);
+      res.status(200).json({ message: 'Quiz submitted successfully!', score : calculatedScore});
     } catch (err) {
       console.error('Error submitting quiz:', err);
       res.status(500).json({ message: 'Error submitting quiz' });
