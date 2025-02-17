@@ -1,7 +1,7 @@
 .quiz-page {
     display: flex;
     background-color: rgb(62, 224, 242);
-    height: 100vh;
+    min-height: 100vh;
     width: 100vw;
 }
 

@@ -15,24 +15,25 @@ router.get("/questions", async (req, res) => {
 });
 
 // Submit Quiz & Save Score
-router.post("/submit", async (req, res) => {
+router.post('/submit', async (req, res) => {
+    const { username, results, score } = req.body;
+  
     try {
-        const { username, results } = req.body;
-        const questions = await Question.find({ _id: { $in: Object.keys(answers) } });
-
-        let score = 0;
-        questions.forEach((q) => {
-            if (q.answer === answers[q._id]) score++;
-        });
-
-        const newScore = new Score({ username, score });
-        await newScore.save();
-
-        res.json({ message: "Quiz submitted!", score });
+      // Update questions with opted answers
+      for (const result of results) {
+        await Question.findByIdAndUpdate(result._id, { optedAnswer: result.optedAnswer });
+      }
+  
+      // Save the score to the database
+      const newScore = new Score({ username, score });
+      await newScore.save();
+  
+      res.status(200).json({ message: 'Quiz submitted successfully!' });
     } catch (err) {
-        res.status(500).json({ error: err.message });
+      console.error('Error submitting quiz:', err);
+      res.status(500).json({ message: 'Error submitting quiz' });
     }
-});
+  });
 
 // Get Top Scores
 router.get("/scores", async (req, res) => {
