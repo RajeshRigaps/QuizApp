@@ -34,6 +34,27 @@ const QuizPage = () => {
       .catch((err) => console.error("Error fetching questions", err));
   }, [setQuestions, setSelectedOptions]);
 
+  useEffect(() => {
+    const handleBeforeUnload = (event) => {
+      event.preventDefault();
+      event.returnValue = ''; // This is required for Chrome to show the alert
+      return 'Are you sure you want to leave? Your quiz will be cancelled.';
+    };
+
+    const handleUnload = () => {
+      alert('Quiz cancelled. Navigating to home.');
+      navigate('/');
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    window.addEventListener('unload', handleUnload);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+      window.removeEventListener('unload', handleUnload);
+    };
+  }, [navigate]);
+
   const handleQuestionClick = (index) => {
     setCurrentQuestionIndex(index);
   };
