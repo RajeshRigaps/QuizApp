@@ -1,5 +1,12 @@
 const mongoose = require('mongoose');
 
+const resultSchema = new mongoose.Schema({
+  question: {type: String, required:true},
+  options : [{type : String, requited:true}],
+  correctAnswer : {type: String, required:true},
+  optedAnswer : {type:String}
+})
+
 const ScoreSchema = new mongoose.Schema({
   username: {
     type: String,
@@ -9,19 +16,7 @@ const ScoreSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  results: [
-    {
-      _id: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Question',
-        required: true,
-      },
-      optedAnswer: {
-        type: String,
-        required: true,
-      },
-    },
-  ],
+  results: [resultSchema],
   date: {
     type: Date,
     default: Date.now,

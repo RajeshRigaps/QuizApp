@@ -24,10 +24,9 @@ const QuizPage = () => {
       .then((data) => {
         // Shuffle questions and options
         const shuffledQuestions = shuffleArray([...data]).map((questionData) => ({
-          _id : questionData._id,
+          _id: questionData._id,
           question: questionData.question,
-          options: shuffleArray([...questionData.options]),
-          correctAnswer: questionData.correctAnswer
+          options: shuffleArray([...questionData.options])
         }));
         setQuestions(shuffledQuestions);
         setSelectedOptions(Array(shuffledQuestions.length).fill(null));
@@ -55,11 +54,23 @@ const QuizPage = () => {
     .then((res) => res.json())
     .then((data) => {
       console.log("Quiz submitted!");
-      setScore(data.score);
+      setScore(data.score); 
       setIsQuizCompleted(true);
       navigate('/result');
     })
     .catch((err) => console.error("Error submitting quiz:", err));
+  };
+
+  const handlePreviousClick = () => {
+    if (currentQuestionIndex > 0) {
+      setCurrentQuestionIndex(currentQuestionIndex - 1);
+    }
+  };
+
+  const handleNextClick = () => {
+    if (currentQuestionIndex < questions.length - 1) {
+      setCurrentQuestionIndex(currentQuestionIndex + 1);
+    }
   };
 
   return (
@@ -76,7 +87,7 @@ const QuizPage = () => {
         ))}
       </div>
       <div className="quiz-container">
-        <h1>Welcome, {name}</h1>
+        {currentQuestionIndex === 0 && (<h1>Welcome, {name}</h1>)}
         {questions.length > 0 && (
           <div className="question">
             <h2>{questions[currentQuestionIndex].question}</h2>
@@ -93,11 +104,20 @@ const QuizPage = () => {
             </div>
           </div>
         )}
-        {currentQuestionIndex === questions.length - 1 && (
-          <button className="submit-button" onClick={handleSubmit}>
-            Submit
+        <div className="navigation-buttons">
+          <button onClick={handlePreviousClick} disabled={currentQuestionIndex === 0}>
+            Previous
           </button>
-        )}
+          {currentQuestionIndex < questions.length - 1 ? (
+            <button onClick={handleNextClick}>
+              Next
+            </button>
+          ) : (
+            <button className="submit-button" onClick={handleSubmit}>
+              Submit
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );
