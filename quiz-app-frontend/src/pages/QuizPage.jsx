@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { QuizContext } from '../contexts/QuizContext';
 import '../assets/styles/QuizPage.css';
 
-const API_URL = import.meta.env.VITE_API_URL;
-/*const API_URL = 'http://localhost:5000/api/quiz';*/
+//const API_URL = import.meta.env.VITE_API_URL;
+const API_URL = 'http://localhost:5000/api/quiz';
 
 const shuffleArray = (array) => {
   for (let i = array.length - 1; i > 0; i--) {

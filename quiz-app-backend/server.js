@@ -9,11 +9,11 @@ const app = express();
 //app.use(cors());
 //app.use(cors({ origin: "http://localhost:5173", credentials: true }));
 const allowedOrigins = [
-    'http://localhost:3000', // if developing locally
+    'http://localhost:5173', // if developing locally
     'http://myquizappbucket123.s3-website.ap-south-1.amazonaws.com', // replace with your actual S3 frontend URL
     'https://your-cloudfront-url.amazonaws.com' // (if you later use CloudFront)
   ];
-  
+
 app.use(cors({
     origin: function (origin, callback) {
       if (!origin || allowedOrigins.includes(origin)) {
