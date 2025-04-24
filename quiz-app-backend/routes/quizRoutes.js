@@ -40,7 +40,7 @@ router.post('/submit', async (req, res) => {
     await newScore.save();
 
     console.log(results);
-    res.status(200).json({ message: 'Quiz submitted successfully!', score: calculatedScore });
+    res.status(200).json({ message: 'Quiz submitted successfully!', score: calculatedScore, results : results });
   } catch (err) {
     console.error('Error submitting quiz:', err);
     res.status(500).json({ message: 'Error submitting quiz' });
